@@ -11,6 +11,7 @@
 #include "derivative.h"
 #include "fd.h"
 #include "svc.h"
+#include "PCB.h"
 
 //TODO: environment
 //TODO: escapes
@@ -25,7 +26,9 @@
  * exits EXIT_SUCCESS unless any error occurs
  */
 
-int interactive () {
+int interactive (int argc, char *argv[]) {
+	(void)argc;
+	(void)argv;
     char *prompt = DFL_PROMPT;
     int rv = 0;
     input_t *cmd;
@@ -87,12 +90,18 @@ int InitializeUART( int baudrate ) {
 //TODO: setdate right now only accepts timestamps (in seconds)
 //TODO: multiprocessing
 
+int shell_init() {
+    //kfork(&interactive);
+	return interactive(0, NULL);
+    //return 0;
+}
+
 int main(int argc, char *argv[]) {
 	if (set_buffer() == -1) return 1;
     if (boot() == -1) return 1;	/* other devices are also booted here */
     svcInit_SetSVCPriority(15);
+    pcbq_init();
+
     privUnprivileged();
-
-    return interactive();
+    return shell_init();
 }
-

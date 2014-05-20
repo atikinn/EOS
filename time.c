@@ -25,10 +25,8 @@ void flexTimer0Action(void) {
 }
 
 void PDB0Action(void) {
-    svcInit_SetSVCPriority(6);
 	//pdbaction();
 	kprintf(STDOUT, "pdbtest\r\n");
-    svcInit_SetSVCPriority(15);
     PDB0Stop();
 }
 
